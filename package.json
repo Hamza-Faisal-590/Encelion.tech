@@ -1,0 +1,39 @@
+{
+  "name": "encelion",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Encelion.tech — Enterprise AI Platform",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "typecheck": "turbo run typecheck",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\" --ignore-path .gitignore",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\" --ignore-path .gitignore",
+    "test": "turbo run test",
+    "test:unit": "turbo run test:unit",
+    "test:integration": "turbo run test:integration",
+    "clean": "turbo run clean && rimraf node_modules",
+    "db:generate": "turbo run db:generate --filter=@encelion/database",
+    "db:migrate": "turbo run db:migrate --filter=@encelion/database",
+    "db:seed": "turbo run db:seed --filter=@encelion/database",
+    "db:studio": "turbo run db:studio --filter=@encelion/database"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.0",
+    "prettier": "^3.3.0",
+    "rimraf": "^6.0.0",
+    "turbo": "^2.3.0",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.12.0"
+}

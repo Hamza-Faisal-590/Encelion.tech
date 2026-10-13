@@ -1,0 +1,692 @@
+// Prisma Schema for Encelion.tech
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions", "fullTextSearch"]
+}
+
+// ────────────────────────────────────────────────────────────────────
+// 1. MULTI-TENANCY & RBAC
+// ────────────────────────────────────────────────────────────────────
+
+enum TenantStatus {
+  ACTIVE
+  SUSPENDED
+  PROVISIONING
+  ARCHIVED
+}
+
+enum PlanTier {
+  FREE
+  STARTER
+  PRO
+  ENTERPRISE
+  CUSTOM
+}
+
+model Tenant {
+  id          String       @id @default(uuid())
+  name        String
+  slug        String       @unique
+  domain      String?      @unique
+  customDomain String?     @unique
+  status      TenantStatus @default(ACTIVE)
+  planTier    PlanTier     @default(FREE)
+  settings    Json         @default("{}")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  users              TenantUser[]
+  agents             Agent[]
+  knowledgeBases     KnowledgeBase[]
+  voiceProfiles      VoiceProfile[]
+  workflows          Workflow[]
+  leads              Lead[]
+  visionJobs         VisionJob[]
+  robotStates        RobotState[]
+  subscriptions      TenantSubscription[]
+  usageMeters        UsageMeter[]
+  tokenLogs          TokenUsageLog[]
+  auditLogs          AuditLog[]
+  apiTokens          ApiToken[]
+  webhookEndpoints   WebhookEndpoint[]
+  crmIntegrations    CRMIntegration[]
+
+  @@map("tenants")
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ORG_ADMIN
+  DEVELOPER
+  ANALYST
+  SUPPORT
+  END_USER
+}
+
+model User {
+  id             String    @id @default(uuid())
+  email          String    @unique
+  passwordHash   String
+  firstName      String?
+  lastName       String?
+  avatarUrl      String?
+  isSuperAdmin   Boolean   @default(false)
+  isEmailVerified Boolean  @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  tenants        TenantUser[]
+  refreshTokens  RefreshToken[]
+  twoFactorAuth  TwoFactorAuth?
+  auditLogs      AuditLog[]
+  apiTokens      ApiToken[]
+
+  @@map("users")
+}
+
+model TenantUser {
+  id        String   @id @default(uuid())
+  tenantId  String
+  userId    String
+  role      UserRole @default(END_USER)
+  createdAt DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, userId])
+  @@map("tenant_users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique
+  family    String
+  isRevoked Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+model TwoFactorAuth {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  secret      String
+  isEnabled   Boolean  @default(false)
+  backupCodes Json     @default("[]")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("two_factor_auth")
+}
+
+// ────────────────────────────────────────────────────────────────────
+// 2. AI AGENT ENGINE & SESSIONS
+// ────────────────────────────────────────────────────────────────────
+
+enum AgentType {
+  HOMEPAGE_HUMANOID
+  CUSTOMER_SUPPORT
+  SALES_SDR
+  CODE_AUDITOR
+  KNOWLEDGE_SEARCH
+  WORKFLOW_EXECUTOR
+}
+
+model Agent {
+  id          String    @id @default(uuid())
+  tenantId    String
+  name        String
+  description String?
+  type        AgentType @default(CUSTOMER_SUPPORT)
+  isPublic    Boolean   @default(false)
+  config      Json      @default("{}")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  tenant         Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  sessions       AgentSession[]
+  promptVersions PromptVersion[]
+
+  @@map("agents")
+}
+
+model AgentSession {
+  id          String   @id @default(uuid())
+  agentId     String
+  tenantId    String?
+  visitorId   String?
+  userId      String?
+  metadata    Json     @default("{}")
+  totalTokens Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  agent          Agent            @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  messages       ChatMessage[]
+  speechSessions SpeechSession[]
+  retrievalLogs  RetrievalLog[]
+  leads          Lead[]
+
+  @@map("agent_sessions")
+}
+
+enum MessageRole {
+  SYSTEM
+  USER
+  ASSISTANT
+  TOOL
+}
+
+model ChatMessage {
+  id             String      @id @default(uuid())
+  sessionId      String
+  role           MessageRole
+  content        String
+  citations      Json?       @default("[]")
+  tokenCount     Int         @default(0)
+  latencyMs      Int?
+  providerModel  String?
+  createdAt      DateTime    @default(now())
+
+  session AgentSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
+}
+
+model PromptTemplate {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  category    String
+  description String?
+  createdAt   DateTime @default(now())
+
+  versions PromptVersion[]
+
+  @@map("prompt_templates")
+}
+
+model PromptVersion {
+  id         String   @id @default(uuid())
+  templateId String
+  agentId    String?
+  version    Int
+  systemPrompt String
+  temperature Float   @default(0.7)
+  topP       Float    @default(1.0)
+  isCurrent  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  template PromptTemplate? @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  agent    Agent?          @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@map("prompt_versions")
+}
+
+// ────────────────────────────────────────────────────────────────────
+// 3. RAG KNOWLEDGE GRAPH & VECTORS
+// ────────────────────────────────────────────────────────────────────
+
+enum DocumentStatus {
+  PENDING
+  PROCESSING
+  INDEXED
+  FAILED
+}
+
+model KnowledgeBase {
+  id          String   @id @default(uuid())
+  tenantId    String
+  name        String
+  description String?
+  isGlobal    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant    Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  documents Document[]
+
+  @@map("knowledge_bases")
+}
+
+model Document {
+  id              String         @id @default(uuid())
+  knowledgeBaseId String
+  title           String
+  sourceUrl       String?
+  fileKey         String?
+  mimeType        String
+  fileSizeBytes   Int
+  status          DocumentStatus @default(PENDING)
+  errorMessage    String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  knowledgeBase KnowledgeBase   @relation(fields: [knowledgeBaseId], references: [id], onDelete: Cascade)
+  chunks        DocumentChunk[]
+
+  @@map("documents")
+}
+
+model DocumentChunk {
+  id          String   @id @default(uuid())
+  documentId  String
+  chunkIndex  Int
+  content     String
+  headingPath String?
+  metadata    Json     @default("{}")
+  tokenCount  Int
+  createdAt   DateTime @default(now())
+
+  document   Document    @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  embeddings Embedding[]
+
+  @@map("document_chunks")
+}
+
+model Embedding {
+  id        String   @id @default(uuid())
+  chunkId   String   @unique
+  provider  String   @default("openai")
+  modelName String   @default("text-embedding-3-small")
+  dimensions Int     @default(1536)
+  vector    String   // Stored as JSON string or float array string
+  createdAt DateTime @default(now())
+
+  chunk DocumentChunk @relation(fields: [chunkId], references: [id], onDelete: Cascade)
+
+  @@map("embeddings")
+}
+
+model RetrievalLog {
+  id         String   @id @default(uuid())
+  sessionId  String
+  query      String
+  topK       Int
+  chunksUsed Json
+  latencyMs  Int
+  createdAt  DateTime @default(now())
+
+  session AgentSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@map("retrieval_logs")
+}
+
+// ────────────────────────────────────────────────────────────────────
+// 4. MULTI-MODAL VOICE AI
+// ────────────────────────────────────────────────────────────────────
+
+model VoiceProfile {
+  id          String   @id @default(uuid())
+  tenantId    String?
+  name        String
+  provider    String   @default("elevenlabs")
+  voiceId     String
+  language    String   @default("en-US")
+  settings    Json     @default("{}")
+  createdAt   DateTime @default(now())
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("voice_profiles")
+}
+
+model SpeechSession {
+  id          String   @id @default(uuid())
+  agentSessionId String
+  sttProvider String   @default("openai_whisper")
+  ttsProvider String   @default("elevenlabs")
+  createdAt   DateTime @default(now())
+
+  agentSession AgentSession     @relation(fields: [agentSessionId], references: [id], onDelete: Cascade)
+  requests     SpeechRequest[]
+  responses    SpeechResponse[]
+
+  @@map("speech_sessions")
+}
+
+model SpeechRequest {
+  id              String   @id @default(uuid())
+  speechSessionId String
+  audioUrl        String?
+  transcript      String?
+  latencyMs       Int
+  createdAt       DateTime @default(now())
+
+  speechSession SpeechSession @relation(fields: [speechSessionId], references: [id], onDelete: Cascade)
+
+  @@map("speech_requests")
+}
+
+model SpeechResponse {
+  id              String   @id @default(uuid())
+  speechSessionId String
+  text            String
+  audioUrl        String?
+  characterCount  Int
+  latencyMs       Int
+  cacheHit        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  speechSession SpeechSession @relation(fields: [speechSessionId], references: [id], onDelete: Cascade)
+
+  @@map("speech_responses")
+}
+
+// ────────────────────────────────────────────────────────────────────
+// 5. COMPUTER VISION & ROBOTICS
+// ────────────────────────────────────────────────────────────────────
+
+enum RobotEmotion {
+  NEUTRAL
+  THINKING
+  SPEAKING
+  LISTENING
+  HAPPY
+  CONCERNED
+}
+
+model RobotState {
+  id        String       @id @default(uuid())
+  tenantId  String?
+  emotion   RobotEmotion @default(NEUTRAL)
+  gesture   String       @default("idle")
+  fps       Float        @default(60.0)
+  createdAt DateTime     @default(now())
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("robot_states")
+}
+
+model VisionJob {
+  id          String   @id @default(uuid())
+  tenantId    String
+  taskType    String
+  imageUrl    String
+  result      Json?
+  status      String   @default("PENDING")
+  latencyMs   Int?
+  createdAt   DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("vision_jobs")
+}
+
+// ────────────────────────────────────────────────────────────────────
+// 6. LEAD GEN & CRM HANDOFF
+// ────────────────────────────────────────────────────────────────────
+
+enum LeadStatus {
+  NEW
+  QUALIFIED
+  HANDOFF_PENDING
+  CONTACTED
+  CONVERTED
+  DISQUALIFIED
+}
+
+model Lead {
+  id             String     @id @default(uuid())
+  tenantId       String
+  agentSessionId String?
+  name           String
+  email          String
+  phone          String?
+  company        String?
+  intentScore    Float      @default(0.0)
+  status         LeadStatus @default(NEW)
+  customData     Json       @default("{}")
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  tenant       Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  agentSession AgentSession?  @relation(fields: [agentSessionId], references: [id], onDelete: SetNull)
+  activities   LeadActivity[]
+
+  @@map("leads")
+}
+
+model LeadActivity {
+  id        String   @id @default(uuid())
+  leadId    String
+  action    String
+  details   Json     @default("{}")
+  createdAt DateTime @default(now())
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@map("lead_activities")
+}
+
+model CRMIntegration {
+  id         String   @id @default(uuid())
+  tenantId   String
+  provider   String   // hubspot, salesforce, webhook
+  config     Json
+  isEnabled  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("crm_integrations")
+}
+
+// ────────────────────────────────────────────────────────────────────
+// 7. AUTOMATION ENGINE & WORKFLOWS
+// ────────────────────────────────────────────────────────────────────
+
+model Workflow {
+  id          String   @id @default(uuid())
+  tenantId    String
+  name        String
+  description String?
+  nodes       Json     // React Flow node definitions
+  edges       Json     // React Flow edge connections
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant     Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  executions WorkflowExecution[]
+
+  @@map("workflows")
+}
+
+enum ExecutionStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model WorkflowExecution {
+  id          String          @id @default(uuid())
+  workflowId  String
+  status      ExecutionStatus @default(RUNNING)
+  trigger     String          @default("manual")
+  inputData   Json            @default("{}")
+  outputData  Json?
+  startedAt   DateTime        @default(now())
+  completedAt DateTime?
+
+  workflow Workflow      @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  logs     WorkflowLog[]
+
+  @@map("workflow_executions")
+}
+
+model WorkflowLog {
+  id          String   @id @default(uuid())
+  executionId String
+  nodeId      String
+  level       String   @default("info")
+  message     String
+  data        Json?
+  timestamp   DateTime @default(now())
+
+  execution WorkflowExecution @relation(fields: [executionId], references: [id], onDelete: Cascade)
+
+  @@map("workflow_logs")
+}
+
+// ────────────────────────────────────────────────────────────────────
+// 8. BILLING, ENTITLEMENTS & METERING
+// ────────────────────────────────────────────────────────────────────
+
+model SubscriptionPlan {
+  id            String   @id @default(uuid())
+  name          String
+  tier          PlanTier @unique
+  stripePriceId String?
+  monthlyTokens Int
+  maxAgents     Int
+  maxStorageGb  Int
+  priceMonthly  Int      // in cents
+  features      Json     @default("[]")
+  createdAt     DateTime @default(now())
+
+  tenantSubscriptions TenantSubscription[]
+
+  @@map("subscription_plans")
+}
+
+model TenantSubscription {
+  id                   String   @id @default(uuid())
+  tenantId             String
+  planId               String
+  stripeSubscriptionId String?  @unique
+  stripeCustomerId     String?
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  tenant Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  plan   SubscriptionPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@map("tenant_subscriptions")
+}
+
+model UsageMeter {
+  id             String   @id @default(uuid())
+  tenantId       String
+  metric         String   // token_count, voice_seconds, vision_calls, storage_bytes
+  value          BigInt   @default(0)
+  periodStart    DateTime
+  periodEnd      DateTime
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, metric, periodStart])
+  @@map("usage_meters")
+}
+
+model TokenUsageLog {
+  id         String   @id @default(uuid())
+  tenantId   String
+  model      String
+  promptTokens Int
+  completionTokens Int
+  totalTokens Int
+  costUsd    Float    @default(0.0)
+  createdAt  DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("token_usage_logs")
+}
+
+// ────────────────────────────────────────────────────────────────────
+// 9. SYSTEM ADMINISTRATION, SECURITY & WEBHOOKS
+// ────────────────────────────────────────────────────────────────────
+
+model SystemConfig {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     Json
+  updatedAt DateTime @updatedAt
+
+  @@map("system_configs")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  tenantId   String?
+  userId     String?
+  action     String
+  resource   String
+  resourceId String?
+  payload    Json?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}
+
+model ApiToken {
+  id        String    @id @default(uuid())
+  tenantId  String
+  userId    String
+  name      String
+  tokenHash String    @unique
+  tokenPrefix String
+  lastUsedAt DateTime?
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("api_tokens")
+}
+
+model WebhookEndpoint {
+  id        String   @id @default(uuid())
+  tenantId  String
+  url       String
+  secret    String
+  events    Json     // Array of event types e.g. ["lead.created", "workflow.failed"]
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  tenant     Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  deliveries WebhookDelivery[]
+
+  @@map("webhook_endpoints")
+}
+
+model WebhookDelivery {
+  id         String   @id @default(uuid())
+  endpointId String
+  event      String
+  payload    Json
+  statusCode Int?
+  response   String?
+  latencyMs  Int?
+  createdAt  DateTime @default(now())
+
+  endpoint WebhookEndpoint @relation(fields: [endpointId], references: [id], onDelete: Cascade)
+
+  @@map("webhook_deliveries")
+}

@@ -1,0 +1,48 @@
+{
+  "name": "@encelion/web",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@encelion/ai": "workspace:*",
+    "@encelion/auth": "workspace:*",
+    "@encelion/config": "workspace:*",
+    "@encelion/database": "workspace:*",
+    "@encelion/email": "workspace:*",
+    "@encelion/payments": "workspace:*",
+    "@encelion/rag": "workspace:*",
+    "@encelion/storage": "workspace:*",
+    "@encelion/types": "workspace:*",
+    "@encelion/ui": "workspace:*",
+    "@encelion/validation": "workspace:*",
+    "@encelion/voice": "workspace:*",
+    "@react-three/drei": "^9.98.0",
+    "@react-three/fiber": "^8.15.0",
+    "@tanstack/react-query": "^5.20.0",
+    "clsx": "^2.1.0",
+    "framer-motion": "^11.0.0",
+    "lucide-react": "^0.344.0",
+    "next": "^14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^2.2.1",
+    "three": "^0.161.0",
+    "zustand": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@types/three": "^0.161.0",
+    "autoprefixer": "^10.4.18",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.4.0"
+  }
+}
