@@ -35,8 +35,8 @@ export default function DashboardLayout({
   const navItems = [
     { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { label: 'Projects', href: '/agents', icon: FolderKanban },
-    { label: 'Services', href: '/services', icon: Layers },
-    { label: 'Products', href: '/products', icon: Package },
+    { label: 'Services', href: '/admin-services', icon: Layers },
+    { label: 'Products', href: '/admin-products', icon: Package },
     { label: 'AI Agents', href: '/agents', icon: Bot },
     { label: 'Clients', href: '/leads', icon: Users },
     { label: 'Analytics', href: '/analytics', icon: BarChart3 },

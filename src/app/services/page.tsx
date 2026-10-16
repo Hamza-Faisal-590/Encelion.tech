@@ -1,11 +1,17 @@
+'use client';
+
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Founders from '@/components/Founders';
 import Link from 'next/link';
 import ColorIcon from '@/components/ColorIcon';
 import { ArrowRight } from 'lucide-react';
+import { useServices } from '@/hooks/useServices';
 
 export default function ServicesPage() {
+  const { services } = useServices();
+  const activeServices = services.filter(s => s.status !== 'DRAFT');
+
   return (
     <div>
       <Navbar />
@@ -51,20 +57,18 @@ export default function ServicesPage() {
           </div>
 
           <div className="grid-3" style={{ gap: 24 }}>
-            {[
-              { iconName: 'agents', slug: 'ai-agents', title: 'AI Agents', desc: 'Intelligent agents that think, plan and act.' },
-              { iconName: 'chatbot', slug: 'chatbots', title: 'Chatbots', desc: 'AI chatbots for better customer engagement.' },
-              { iconName: 'workflow', slug: 'workflow-automation', title: 'Workflow Automation', desc: 'Streamline your operations with AI-powered workflows.' },
-              { iconName: 'vision', slug: 'computer-vision', title: 'Computer Vision', desc: 'See, analyze, and make smarter decisions.' },
-              { iconName: 'custom', slug: 'custom-ai', title: 'Custom AI Development', desc: 'Tailored AI solutions for your unique needs.' },
-            ].map((s, i) => (
-              <div key={i} className="service-card">
+            {activeServices.map((s, i) => (
+              <div key={s.id || s.slug || i} className="service-card">
                 <div style={{ marginBottom: 16 }}>
-                  <ColorIcon name={s.iconName} size={52} />
+                  <ColorIcon name={s.iconName || 'agents'} size={52} />
                 </div>
                 <h3 style={{ fontSize: 17, marginBottom: 8 }}>{s.title}</h3>
-                <p style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.6, marginBottom: 16 }}>{s.desc}</p>
-                <Link href={`/services/${s.slug}`} className="learn-more">Learn More <ArrowRight size={14} /></Link>
+                <p style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.6, marginBottom: 16 }}>
+                  {s.description || s.tagline}
+                </p>
+                <Link href={`/services/${s.slug}`} className="learn-more">
+                  Learn More <ArrowRight size={14} />
+                </Link>
               </div>
             ))}
 

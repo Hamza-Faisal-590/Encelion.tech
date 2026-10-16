@@ -1,10 +1,16 @@
+'use client';
+
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import ColorIcon from '@/components/ColorIcon';
 import { ArrowRight } from 'lucide-react';
+import { useProducts } from '@/hooks/useProducts';
 
 export default function ProductsPage() {
+  const { products } = useProducts();
+  const activeProducts = products.filter(p => p.status !== 'DRAFT');
+
   return (
     <div>
       <Navbar />
@@ -51,21 +57,21 @@ export default function ProductsPage() {
           </div>
 
           <div className="grid-3" style={{ gap: 24 }}>
-            {[
-              { iconName: 'workflow', title: 'AI Automation Suite', desc: 'Automate workflows & save time.' },
-              { iconName: 'chatbot', title: 'AI Chat Platform', desc: 'Build intelligent conversations.' },
-              { iconName: 'vision', title: 'Computer Vision Pro', desc: 'Turn visual data into insights.' },
-              { iconName: 'database', title: 'Data Intelligence', desc: 'Better data. Smarter decisions.' },
-              { iconName: 'analytics', title: 'AI Analytics', desc: 'Real-time insights & reporting.' },
-              { iconName: 'studio', title: 'Custom AI Studio', desc: 'Build your own AI models.' },
-            ].map((p, i) => (
-              <div key={i} className="service-card">
-                <div style={{ marginBottom: 14 }}>
-                  <ColorIcon name={p.iconName} size={50} />
+            {activeProducts.map((p, i) => (
+              <div key={p.id || p.slug || i} className="service-card">
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+                  <ColorIcon name={p.iconName || 'workflow'} size={50} />
+                  {p.badge && (
+                    <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 12, background: '#E6F7F4', color: '#00B894' }}>
+                      {p.badge}
+                    </span>
+                  )}
                 </div>
                 <h3 style={{ fontSize: 17, marginBottom: 6 }}>{p.title}</h3>
                 <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 16 }}>{p.desc}</p>
-                <Link href="/contact" className="learn-more">Learn More <ArrowRight size={14} /></Link>
+                <Link href={p.ctaLink || '/contact'} className="learn-more">
+                  {p.ctaText || 'Learn More'} <ArrowRight size={14} />
+                </Link>
               </div>
             ))}
           </div>
