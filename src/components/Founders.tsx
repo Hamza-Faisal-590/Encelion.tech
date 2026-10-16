@@ -2,35 +2,11 @@
 
 import Link from 'next/link';
 import { Linkedin, Twitter, Globe } from 'lucide-react';
-
-const founders = [
-  {
-    name: 'Hamza Iqbal',
-    role: 'CEO & Co-Founder',
-    tag: 'Chief Executive Officer',
-    bio: 'Visionary entrepreneur and AI strategist with 8+ years of experience building enterprise software. Hamza founded Encelion.tech with the mission to make advanced AI accessible to every business. He leads the overall company direction, client strategy, and innovation roadmap.',
-    image: '/founder_ceo.png',
-    expertise: ['AI Strategy', 'Business Development', 'Product Vision', 'Enterprise Partnerships'],
-    linkedin: 'https://linkedin.com',
-    twitter: 'https://twitter.com',
-    initials: 'HI',
-    color: '#00B894',
-  },
-  {
-    name: 'Usman Tariq',
-    role: 'CTO & Co-Founder',
-    tag: 'Chief Technology Officer',
-    bio: 'Full-stack AI engineer and systems architect with deep expertise in machine learning, NLP, and autonomous agents. Usman leads the engineering and research teams at Encelion.tech, ensuring cutting-edge technology is delivered with precision and scalability.',
-    image: null,
-    expertise: ['Machine Learning', 'NLP & LLMs', 'System Architecture', 'AI Agents'],
-    linkedin: 'https://linkedin.com',
-    twitter: 'https://twitter.com',
-    initials: 'UT',
-    color: '#0A1628',
-  },
-];
+import { useFounders } from '@/hooks/useFounders';
 
 export default function Founders() {
+  const { founders } = useFounders();
+
   return (
     <section style={{
       background: 'linear-gradient(135deg, #0A1628 0%, #0d1f3c 50%, #0A1628 100%)',
@@ -84,7 +60,7 @@ export default function Founders() {
         <div className="founders-grid">
           {founders.map((founder, i) => (
             <div
-              key={i}
+              key={founder.id || i}
               className="founder-card"
               style={{
                 background: 'rgba(255,255,255,0.05)',

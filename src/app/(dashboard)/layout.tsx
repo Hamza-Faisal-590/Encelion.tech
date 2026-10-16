@@ -14,6 +14,7 @@ import {
   BarChart3,
   UserCheck,
   Settings,
+  Mail,
   Search,
   Bell,
   Sun,
@@ -37,10 +38,10 @@ export default function DashboardLayout({
     { label: 'Services', href: '/services', icon: Layers },
     { label: 'Products', href: '/products', icon: Package },
     { label: 'AI Agents', href: '/agents', icon: Bot },
-    { label: 'Chatbot', href: '/contact', icon: MessageSquare },
     { label: 'Clients', href: '/leads', icon: Users },
     { label: 'Analytics', href: '/analytics', icon: BarChart3 },
-    { label: 'Team', href: '/about', icon: UserCheck },
+    { label: 'Founders & Team', href: '/team', icon: UserCheck },
+    { label: 'Contact Info', href: '/contact-info', icon: Mail },
     { label: 'Settings', href: '/settings', icon: Settings },
   ];
 

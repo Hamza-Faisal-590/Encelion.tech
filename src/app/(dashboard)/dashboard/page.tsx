@@ -23,6 +23,7 @@ import {
   Send,
   Edit3,
   DollarSign,
+  Mail,
 } from 'lucide-react';
 
 export default function DashboardPage() {
@@ -402,11 +403,12 @@ export default function DashboardPage() {
 
           </div>
 
-          {/* BOTTOM QUICK ACTIONS TRIPLE CARDS */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* BOTTOM QUICK ACTIONS CARDS */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { title: 'Quick Actions', desc: 'Access your most used features', href: '/services', icon: Sparkles },
-              { title: 'Recent Clients', desc: 'View all your clients', href: '/leads', icon: Users },
+              { title: 'Founders & Team', desc: 'Edit leadership profiles', href: '/team', icon: Users },
+              { title: 'Contact Info', desc: 'Edit email, phone & location', href: '/contact-info', icon: Mail },
+              { title: 'Recent Clients', desc: 'View client inquiries', href: '/leads', icon: Users },
               { title: 'System Status', desc: 'All systems operational', href: '/analytics', icon: CheckCircle2 },
             ].map((qa, idx) => {
               const QaIcon = qa.icon;

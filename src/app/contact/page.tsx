@@ -5,8 +5,10 @@ import Footer from '@/components/Footer';
 import { useState } from 'react';
 import ColorIcon from '@/components/ColorIcon';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { useContactInfo } from '@/hooks/useContactInfo';
 
 export default function ContactPage() {
+  const { contactInfo } = useContactInfo();
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -36,16 +38,16 @@ export default function ContactPage() {
               Let's Build Something<br /><span style={{ color: '#00B894' }}>Great Together</span>
             </h1>
             <p className="section-subtitle" style={{ margin: '0 auto' }}>
-              Have a project in mind, a question, or just want to say hello? We'd love to hear from you.
+              {contactInfo.contactSubtitle || "Have a project in mind, a question, or just want to say hello? We'd love to hear from you."}
             </p>
           </div>
 
           {/* 3 Contact Info Pills at top */}
           <div className="grid-3" style={{ gap: 20, marginBottom: 40 }}>
             {[
-              { iconName: 'email', label: 'Email Us', val: 'hello@encelion.tech', link: 'mailto:hello@encelion.tech' },
-              { iconName: 'phone', label: 'Call Us', val: '+92 001 23 4567', link: 'tel:+92001234567' },
-              { iconName: 'location', label: 'Visit Us', val: 'Lahore, Pakistan', link: '#' },
+              { iconName: 'email', label: 'Email Us', val: contactInfo.email, link: `mailto:${contactInfo.email}` },
+              { iconName: 'phone', label: 'Call Us', val: contactInfo.phone, link: `tel:${contactInfo.phone.replace(/\s+/g, '')}` },
+              { iconName: 'location', label: 'Visit Us', val: contactInfo.address, link: '#' },
             ].map((c, i) => (
               <div key={i} style={{ background: '#fff', padding: 22, borderRadius: 18, border: '1px solid #E5E7EB', display: 'flex', alignItems: 'center', gap: 16, boxShadow: '0 4px 14px rgba(0,0,0,0.03)' }}>
                 <ColorIcon name={c.iconName} size={48} />

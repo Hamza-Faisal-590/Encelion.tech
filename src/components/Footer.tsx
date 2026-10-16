@@ -1,7 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 import { Mail, Phone, MapPin, Twitter, Linkedin, Github, Youtube, ArrowRight } from 'lucide-react';
+import { useContactInfo } from '@/hooks/useContactInfo';
 
 export default function Footer() {
+  const { contactInfo } = useContactInfo();
+
   return (
     <footer className="footer">
       <div className="container">
@@ -15,24 +20,32 @@ export default function Footer() {
               </span>
             </div>
             <div style={{ fontSize: 10, fontWeight: 400, color: '#00B894', textTransform: 'uppercase', letterSpacing: '0.15em', fontFamily: 'var(--font-mono)', marginBottom: 12 }}>
-              AI Solutions for a Smarter Tomorrow
+              {contactInfo.tagline || 'AI Solutions for a Smarter Tomorrow'}
             </div>
             <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, maxWidth: 280, marginBottom: 20 }}>
               We build intelligent AI solutions to help businesses automate, innovate, and grow.
             </p>
             <div className="social-links" style={{ display: 'flex', gap: 12 }}>
-              <a href="#" className="social-link" title="X (Twitter)" style={{ width: 34, height: 34, borderRadius: 8, background: 'rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', transition: 'all 0.2s' }}>
-                <Twitter size={16} />
-              </a>
-              <a href="#" className="social-link" title="LinkedIn" style={{ width: 34, height: 34, borderRadius: 8, background: 'rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', transition: 'all 0.2s' }}>
-                <Linkedin size={16} />
-              </a>
-              <a href="#" className="social-link" title="GitHub" style={{ width: 34, height: 34, borderRadius: 8, background: 'rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', transition: 'all 0.2s' }}>
-                <Github size={16} />
-              </a>
-              <a href="#" className="social-link" title="YouTube" style={{ width: 34, height: 34, borderRadius: 8, background: 'rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', transition: 'all 0.2s' }}>
-                <Youtube size={16} />
-              </a>
+              {contactInfo.socialLinks?.twitter && (
+                <a href={contactInfo.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="social-link" title="X (Twitter)" style={{ width: 34, height: 34, borderRadius: 8, background: 'rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', transition: 'all 0.2s' }}>
+                  <Twitter size={16} />
+                </a>
+              )}
+              {contactInfo.socialLinks?.linkedin && (
+                <a href={contactInfo.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="social-link" title="LinkedIn" style={{ width: 34, height: 34, borderRadius: 8, background: 'rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', transition: 'all 0.2s' }}>
+                  <Linkedin size={16} />
+                </a>
+              )}
+              {contactInfo.socialLinks?.github && (
+                <a href={contactInfo.socialLinks.github} target="_blank" rel="noopener noreferrer" className="social-link" title="GitHub" style={{ width: 34, height: 34, borderRadius: 8, background: 'rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', transition: 'all 0.2s' }}>
+                  <Github size={16} />
+                </a>
+              )}
+              {contactInfo.socialLinks?.youtube && (
+                <a href={contactInfo.socialLinks.youtube} target="_blank" rel="noopener noreferrer" className="social-link" title="YouTube" style={{ width: 34, height: 34, borderRadius: 8, background: 'rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', transition: 'all 0.2s' }}>
+                  <Youtube size={16} />
+                </a>
+              )}
             </div>
           </div>
 
@@ -67,15 +80,15 @@ export default function Footer() {
             <ul style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <li style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <Mail size={15} color="#00B894" />
-                <a href="mailto:hello@encelion.tech">hello@encelion.tech</a>
+                <a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a>
               </li>
               <li style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <Phone size={15} color="#00B894" />
-                <a href="tel:+92001234567">+92 001 23 4567</a>
+                <a href={`tel:${contactInfo.phone.replace(/\s+/g, '')}`}>{contactInfo.phone}</a>
               </li>
               <li style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <MapPin size={15} color="#00B894" />
-                <span>Lahore, Pakistan</span>
+                <span>{contactInfo.address}</span>
               </li>
             </ul>
             <div style={{ marginTop: 20 }}>
