@@ -4,8 +4,13 @@ import Founders from '@/components/Founders';
 import Link from 'next/link';
 import ColorIcon from '@/components/ColorIcon';
 import { ArrowRight } from 'lucide-react';
+import { DEFAULT_SERVICES } from '@/data/services';
+import { DEFAULT_PRODUCTS } from '@/data/products';
 
 export default function HomePage() {
+  const homeServices = DEFAULT_SERVICES.filter(s => s.status !== 'DRAFT').slice(0, 6);
+  const homeProducts = DEFAULT_PRODUCTS.filter(p => p.status !== 'DRAFT').slice(0, 3);
+
   return (
     <div>
       <Navbar />
@@ -145,20 +150,14 @@ export default function HomePage() {
 
             {/* Right Cards Grid with 3D Color Image Icons */}
             <div className="grid-3" style={{ gap: 16 }}>
-              {[
-                { iconName: 'agents', slug: 'ai-agents', title: 'AI Agents', desc: 'Autonomous agents that think, plan and act.' },
-                { iconName: 'chatbot', slug: 'chatbots', title: 'Chatbots', desc: 'Intelligent chatbots for better customer engagement.' },
-                { iconName: 'workflow', slug: 'workflow-automation', title: 'Workflow Automation', desc: 'Streamline your operations with AI-powered workflows.' },
-                { iconName: 'vision', slug: 'computer-vision', title: 'Computer Vision', desc: 'See, analyze, and make smarter decisions.' },
-                { iconName: 'custom', slug: 'custom-ai', title: 'Custom AI Development', desc: 'Tailored AI solutions for your unique needs.' },
-              ].map((s, i) => (
-                <div key={i} className="service-card" style={{ padding: 20 }}>
+              {homeServices.map((s, i) => (
+                <div key={s.id || i} className="service-card" style={{ padding: 20 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14 }}>
                     <ColorIcon name={s.iconName} size={48} />
                     <span style={{ color: '#00B894', fontSize: 14, fontWeight: 700 }}>↗</span>
                   </div>
                   <h3 style={{ fontSize: 16, marginBottom: 6 }}>{s.title}</h3>
-                  <p style={{ fontSize: 12, color: '#6B7280', lineHeight: 1.6 }}>{s.desc}</p>
+                  <p style={{ fontSize: 12, color: '#6B7280', lineHeight: 1.6 }}>{s.description || s.tagline}</p>
                   <Link href={`/services/${s.slug}`} className="learn-more" style={{ fontSize: 12 }}>Learn More <ArrowRight size={12} /></Link>
                 </div>
               ))}
@@ -261,23 +260,28 @@ export default function HomePage() {
 
             {/* Products Grid */}
             <div className="grid-3" style={{ gap: 16 }}>
-              {[
-                { title: 'AI Automation Suite', desc: 'Automate workflows & save time.', tag: 'AUTOMATION', img: '/prod_automation.png' },
-                { title: 'AI Chat Platform', desc: 'Build intelligent conversations.', tag: 'CHAT AI', img: '/prod_chat.png' },
-                { title: 'Computer Vision Pro', desc: 'Turn visual data into insights.', tag: 'VISION AI', img: '/prod_vision.png' },
-              ].map((p, i) => (
-                <div key={i} className="product-card">
-                  <div style={{ height: 150, background: '#0A1628', overflow: 'hidden' }}>
-                    <img src={p.img} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              {homeProducts.map((p, i) => {
+                const prodImg =
+                  p.slug === 'ai-chat-platform'
+                    ? '/prod_chat.png'
+                    : p.slug === 'computer-vision-pro'
+                    ? '/prod_vision.png'
+                    : '/prod_automation.png';
+                const tag = p.badge?.toUpperCase() || p.category?.toUpperCase() || 'AI PRODUCT';
+                return (
+                  <div key={p.id || i} className="product-card">
+                    <div style={{ height: 150, background: '#0A1628', overflow: 'hidden' }}>
+                      <img src={prodImg} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                    <div className="product-card-body" style={{ padding: 16 }}>
+                      <div className="product-tag">{tag}</div>
+                      <h3 style={{ fontSize: 15, marginBottom: 4 }}>{p.title}</h3>
+                      <p style={{ fontSize: 12, color: '#6B7280', marginBottom: 12 }}>{p.desc}</p>
+                      <Link href="/products" className="learn-more" style={{ fontSize: 12 }}>Learn More <ArrowRight size={12} /></Link>
+                    </div>
                   </div>
-                  <div className="product-card-body" style={{ padding: 16 }}>
-                    <div className="product-tag">{p.tag}</div>
-                    <h3 style={{ fontSize: 15, marginBottom: 4 }}>{p.title}</h3>
-                    <p style={{ fontSize: 12, color: '#6B7280', marginBottom: 12 }}>{p.desc}</p>
-                    <Link href="/products" className="learn-more" style={{ fontSize: 12 }}>Learn More <ArrowRight size={12} /></Link>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

@@ -9,6 +9,7 @@ import {
   resetStoredContactInfo,
   CONTACT_UPDATED_EVENT,
 } from '@/data/contactInfo';
+import { syncDataToFile } from '@/lib/syncData';
 
 export function useContactInfo() {
   const [contactInfo, setContactInfo] = useState<ContactInfo>(DEFAULT_CONTACT_INFO);
@@ -53,6 +54,7 @@ export function useContactInfo() {
         },
       };
       saveStoredContactInfo(next);
+      syncDataToFile('contactInfo', next);
       return next;
     });
   }, []);
@@ -60,11 +62,13 @@ export function useContactInfo() {
   const saveContactInfo = useCallback((newInfo: ContactInfo) => {
     setContactInfo(newInfo);
     saveStoredContactInfo(newInfo);
+    syncDataToFile('contactInfo', newInfo);
   }, []);
 
   const resetDefaults = useCallback(() => {
     const defaults = resetStoredContactInfo();
     setContactInfo(defaults);
+    syncDataToFile('contactInfo', defaults);
     return defaults;
   }, []);
 

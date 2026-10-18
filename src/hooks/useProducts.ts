@@ -9,6 +9,7 @@ import {
   resetStoredProducts,
   PRODUCTS_UPDATED_EVENT,
 } from '@/data/products';
+import { syncDataToFile } from '@/lib/syncData';
 
 export function useProducts() {
   const [products, setProducts] = useState<ProductItem[]>(DEFAULT_PRODUCTS);
@@ -47,6 +48,7 @@ export function useProducts() {
       const id = product.id || `prod-${Date.now()}`;
       const next = [...prev, { ...product, id }];
       saveStoredProducts(next);
+      syncDataToFile('products', next);
       return next;
     });
   }, []);
@@ -55,14 +57,16 @@ export function useProducts() {
     setProducts(prev => {
       const next = prev.map(p => (p.id === id ? { ...p, ...updates } : p));
       saveStoredProducts(next);
+      syncDataToFile('products', next);
       return next;
     });
   }, []);
 
   const deleteProduct = useCallback((id: string) => {
     setProducts(prev => {
-      const next = prev.filter(p => p.id !== id);
+      const next = prev.filter(s => s.id !== id);
       saveStoredProducts(next);
+      syncDataToFile('products', next);
       return next;
     });
   }, []);
@@ -70,11 +74,13 @@ export function useProducts() {
   const saveAll = useCallback((list: ProductItem[]) => {
     setProducts(list);
     saveStoredProducts(list);
+    syncDataToFile('products', list);
   }, []);
 
   const resetDefaults = useCallback(() => {
     const defaults = resetStoredProducts();
     setProducts(defaults);
+    syncDataToFile('products', defaults);
     return defaults;
   }, []);
 

@@ -22,7 +22,9 @@ import {
   ArrowRight,
   Menu,
   X,
+  UploadCloud,
 } from 'lucide-react';
+import PublishModal from '@/components/PublishModal';
 
 export default function DashboardLayout({
   children,
@@ -31,6 +33,7 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [publishModalOpen, setPublishModalOpen] = useState(false);
 
   const navItems = [
     { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -201,7 +204,18 @@ export default function DashboardLayout({
           </div>
 
           {/* Right Header Controls */}
-          <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
+          <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+            {/* 1-Click Publish to Live Site Button */}
+            <button
+              type="button"
+              onClick={() => setPublishModalOpen(true)}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-gradient-to-r from-[#00B894] to-[#00997A] text-white text-xs font-bold shadow-md shadow-[#00B894]/20 hover:shadow-lg hover:shadow-[#00B894]/35 hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
+            >
+              <UploadCloud className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Publish to Live Site</span>
+              <span className="sm:hidden">Publish</span>
+            </button>
+
             {/* Notification Bell */}
             <button className="relative p-2 rounded-full hover:bg-slate-100 text-slate-600 transition-colors">
               <Bell className="w-4 h-4" />
@@ -235,6 +249,12 @@ export default function DashboardLayout({
         {/* Page Body */}
         <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto">{children}</main>
       </div>
+
+      {/* Publish Modal */}
+      <PublishModal
+        isOpen={publishModalOpen}
+        onClose={() => setPublishModalOpen(false)}
+      />
 
     </div>
   );

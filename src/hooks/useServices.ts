@@ -9,6 +9,7 @@ import {
   resetStoredServices,
   SERVICES_UPDATED_EVENT,
 } from '@/data/services';
+import { syncDataToFile } from '@/lib/syncData';
 
 export function useServices() {
   const [services, setServices] = useState<ServiceItem[]>(DEFAULT_SERVICES);
@@ -47,6 +48,7 @@ export function useServices() {
       const id = service.id || `srv-${Date.now()}`;
       const next = [...prev, { ...service, id }];
       saveStoredServices(next);
+      syncDataToFile('services', next);
       return next;
     });
   }, []);
@@ -55,6 +57,7 @@ export function useServices() {
     setServices(prev => {
       const next = prev.map(s => (s.id === id ? { ...s, ...updates } : s));
       saveStoredServices(next);
+      syncDataToFile('services', next);
       return next;
     });
   }, []);
@@ -63,6 +66,7 @@ export function useServices() {
     setServices(prev => {
       const next = prev.filter(s => s.id !== id);
       saveStoredServices(next);
+      syncDataToFile('services', next);
       return next;
     });
   }, []);
@@ -70,11 +74,13 @@ export function useServices() {
   const saveAll = useCallback((list: ServiceItem[]) => {
     setServices(list);
     saveStoredServices(list);
+    syncDataToFile('services', list);
   }, []);
 
   const resetDefaults = useCallback(() => {
     const defaults = resetStoredServices();
     setServices(defaults);
+    syncDataToFile('services', defaults);
     return defaults;
   }, []);
 

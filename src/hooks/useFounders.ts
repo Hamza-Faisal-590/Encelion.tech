@@ -10,6 +10,7 @@ import {
   resetStoredFounders,
   FOUNDERS_UPDATED_EVENT,
 } from '@/data/founders';
+import { syncDataToFile } from '@/lib/syncData';
 
 export function useFounders() {
   const [founders, setFounders] = useState<Founder[]>(DEFAULT_FOUNDERS);
@@ -51,6 +52,7 @@ export function useFounders() {
     setFounders(prev => {
       const next = prev.map(f => (f.id === id ? { ...f, ...updates } : f));
       saveStoredFounders(next);
+      syncDataToFile('founders', next);
       return next;
     });
   }, []);
@@ -62,6 +64,7 @@ export function useFounders() {
       const full: Founder = { ...newFounder, id, order: prev.length + 1 };
       const next = [...prev, full];
       saveStoredFounders(next);
+      syncDataToFile('founders', next);
       return next;
     });
   }, []);
@@ -71,6 +74,7 @@ export function useFounders() {
     setFounders(prev => {
       const next = prev.filter(f => f.id !== id);
       saveStoredFounders(next);
+      syncDataToFile('founders', next);
       return next;
     });
   }, []);
@@ -79,12 +83,14 @@ export function useFounders() {
   const saveAll = useCallback((list: Founder[]) => {
     setFounders(list);
     saveStoredFounders(list);
+    syncDataToFile('founders', list);
   }, []);
 
   // Reset to original defaults
   const resetDefaults = useCallback(() => {
     const defaults = resetStoredFounders();
     setFounders(defaults);
+    syncDataToFile('founders', defaults);
     return defaults;
   }, []);
 
