@@ -21,7 +21,7 @@ export interface ContactInfo {
 }
 
 export const DEFAULT_CONTACT_INFO: ContactInfo = {
-  "email": "contect@encelion.tech",
+  "email": "contact@encelion.tech",
   "salesEmail": "sales@encelion.tech",
   "supportEmail": "support@encelion.tech",
   "phone": "+92 314 1621510",
