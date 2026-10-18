@@ -13,8 +13,10 @@ export default function Footer() {
         <div className="footer-grid">
           {/* Brand Column */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-              <div className="nav-logo-icon">E</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+              <div className="nav-logo-icon">
+                <img src="/logo.png" alt="Encelion.tech Logo" width={36} height={36} />
+              </div>
               <span style={{ fontSize: 18, fontWeight: 700, color: '#fff', fontFamily: 'var(--font-display)' }}>
                 Encelion<span style={{ color: '#00B894' }}>.tech</span>
               </span>

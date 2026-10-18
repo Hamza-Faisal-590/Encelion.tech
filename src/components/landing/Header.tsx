@@ -11,13 +11,11 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center space-x-3 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#00F0FF] to-[#7000FF] p-0.5 flex items-center justify-center shadow-lg shadow-[#00F0FF]/20 group-hover:scale-105 transition duration-200">
-            <div className="w-full h-full bg-[#0B0F19] rounded-[10px] flex items-center justify-center">
-              <span className="text-[#00F0FF] font-black text-lg tracking-tighter">E</span>
-            </div>
+          <div className="w-9 h-9 rounded-xl overflow-hidden bg-[#04171d] border border-[#00B894]/30 flex items-center justify-center shadow-lg shadow-[#00B894]/20 group-hover:scale-105 transition duration-200 flex-shrink-0">
+            <img src="/logo.png" alt="Encelion.tech Logo" className="w-full h-full object-cover" />
           </div>
-          <span className="font-extrabold text-xl tracking-tight text-white group-hover:text-[#00F0FF] transition">
-            ENCELION<span className="text-[#00F0FF]">.AI</span>
+          <span className="font-extrabold text-xl tracking-tight text-white group-hover:text-[#00B894] transition">
+            ENCELION<span className="text-[#00B894]">.TECH</span>
           </span>
         </Link>
 

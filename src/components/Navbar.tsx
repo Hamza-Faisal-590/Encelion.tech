@@ -23,7 +23,9 @@ export default function Navbar() {
       <div className="nav-inner">
         {/* Logo */}
         <Link href="/" className="nav-logo" onClick={() => setMobileMenuOpen(false)}>
-          <div className="nav-logo-icon">E</div>
+          <div className="nav-logo-icon">
+            <img src="/logo.png" alt="Encelion.tech Logo" width={36} height={36} />
+          </div>
           <span className="nav-logo-text">Encelion<span>.tech</span></span>
         </Link>
 

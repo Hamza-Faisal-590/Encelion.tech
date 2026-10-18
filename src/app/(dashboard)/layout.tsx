@@ -69,8 +69,8 @@ export default function DashboardLayout({
           {/* Header with Close */}
           <div className="flex items-center justify-between mb-6">
             <Link href="/dashboard" className="flex items-center space-x-3 px-2 py-1" onClick={() => setMobileMenuOpen(false)}>
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#00B894] to-[#00D26A] flex items-center justify-center shadow-lg shadow-[#00B894]/25">
-                <span className="text-white font-extrabold text-xl italic tracking-tighter">E</span>
+              <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#04171d] border border-[#00B894]/30 shadow-lg shadow-[#00B894]/20 flex items-center justify-center flex-shrink-0">
+                <img src="/logo.png" alt="Encelion.tech Logo" className="w-full h-full object-cover" />
               </div>
               <div>
                 <span className="font-extrabold text-lg text-slate-900 tracking-tight">Encelion</span>
@@ -128,8 +128,8 @@ export default function DashboardLayout({
         <div>
           {/* Logo Brand */}
           <Link href="/dashboard" className="flex items-center space-x-3 px-2 py-1 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#00B894] to-[#00D26A] flex items-center justify-center shadow-lg shadow-[#00B894]/25">
-              <span className="text-white font-extrabold text-xl italic tracking-tighter">E</span>
+            <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#04171d] border border-[#00B894]/30 shadow-lg shadow-[#00B894]/20 flex items-center justify-center flex-shrink-0">
+              <img src="/logo.png" alt="Encelion.tech Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <span className="font-extrabold text-lg text-slate-900 tracking-tight">Encelion</span>

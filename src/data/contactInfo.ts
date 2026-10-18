@@ -21,25 +21,25 @@ export interface ContactInfo {
 }
 
 export const DEFAULT_CONTACT_INFO: ContactInfo = {
-  email: 'hello@encelion.tech',
-  salesEmail: 'sales@encelion.tech',
-  supportEmail: 'support@encelion.tech',
-  phone: '+92 001 23 4567',
-  whatsapp: '+92 300 1234567',
-  address: 'Lahore, Pakistan',
-  city: 'Lahore',
-  country: 'Pakistan',
-  workingHours: 'Mon - Fri: 9:00 AM - 6:00 PM (PKT)',
-  responseTime: 'Average response time < 2 hours',
-  tagline: 'AI Solutions for a Smarter Tomorrow',
-  contactSubtitle: "Have a project in mind, a question, or just want to say hello? We'd love to hear from you.",
-  socialLinks: {
-    twitter: 'https://twitter.com',
-    linkedin: 'https://linkedin.com',
-    github: 'https://github.com',
-    youtube: 'https://youtube.com',
-    discord: '',
-  },
+  "email": "contect@encelion.tech",
+  "salesEmail": "sales@encelion.tech",
+  "supportEmail": "support@encelion.tech",
+  "phone": "+92 314 1621510",
+  "whatsapp": "+92 314 1621510",
+  "address": "Lahore, Pakistan",
+  "city": "Lahore",
+  "country": "Pakistan",
+  "workingHours": "Mon - Fri: 9:00 AM - 6:00 PM (PKT)",
+  "responseTime": "Average response time < 2 hours",
+  "tagline": "AI Solutions for a Smarter Tomorrow",
+  "contactSubtitle": "Have a project in mind, a question, or just want to say hello? We'd love to hear from you.",
+  "socialLinks": {
+    "twitter": "https://twitter.com",
+    "linkedin": "https://www.linkedin.com/company/encelion-tech/",
+    "github": "https://github.com",
+    "youtube": "https://youtube.com",
+    "discord": ""
+  }
 };
 
 const STORAGE_KEY = 'encelion_contact_info_v1';
