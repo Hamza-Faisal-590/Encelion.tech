@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   Founder,
   DEFAULT_FOUNDERS,
+  STORAGE_KEY,
   getStoredFounders,
   saveStoredFounders,
   resetStoredFounders,
@@ -31,7 +32,7 @@ export function useFounders() {
 
     // Listen for cross-tab storage updates
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'encelion_founders_data_v1') {
+      if (e.key === STORAGE_KEY || e.key === 'encelion_founders_data_v1') {
         setFounders(getStoredFounders());
       }
     };

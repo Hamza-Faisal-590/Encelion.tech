@@ -41,10 +41,10 @@ const COLOR_PRESETS = [
 ];
 
 const PHOTO_PRESETS = [
+  { label: 'Ahmad Zain (CEO)', path: '/uploads/founder_1792168388529_ahmad_png.png' },
+  { label: 'Hamza Faisal (CTO)', path: '/uploads/founder_1792168399823_hamza_png.png' },
   { label: 'CEO Portrait', path: '/founder_ceo.png' },
   { label: 'Leadership Team', path: '/about_team_crop.jpg' },
-  { label: 'AI Robotics', path: '/about_robot_crop.jpg' },
-  { label: 'Monitors & Lab', path: '/case_monitors_crop.jpg' },
 ];
 
 export default function FoundersAdminPage() {
@@ -482,7 +482,7 @@ export default function FoundersAdminPage() {
                       value={founder.name}
                       onChange={e => handleNameChange(founder.id, e.target.value)}
                       className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-semibold text-slate-800 focus:outline-none focus:border-[#00B894] focus:ring-2 focus:ring-[#00B894]/20 transition"
-                      placeholder="e.g. Hamza Iqbal"
+                      placeholder="e.g. Ahmad Zain"
                     />
                   </div>
 

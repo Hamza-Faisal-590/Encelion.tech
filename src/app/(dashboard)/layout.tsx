@@ -221,12 +221,12 @@ export default function DashboardLayout({
             {/* Profile Avatar */}
             <div className="flex items-center space-x-2 sm:space-x-3 pl-2 border-l border-slate-200">
               <div className="w-9 h-9 rounded-full bg-[#00B894]/10 border-2 border-[#00B894] overflow-hidden flex items-center justify-center font-bold text-xs text-[#00B894] flex-shrink-0">
-                <img src="/founder_ceo.png" alt="Hamza Faisal" className="w-full h-full object-cover" onError={(e) => { (e.target as any).style.display = 'none'; }} />
+                <img src="/uploads/founder_1792168399823_hamza_png.png" alt="Hamza Faisal" className="w-full h-full object-cover" onError={(e) => { (e.target as any).style.display = 'none'; }} />
                 <span>HF</span>
               </div>
               <div className="text-left hidden lg:block">
                 <div className="text-xs font-bold text-slate-900 leading-tight">Hamza Faisal</div>
-                <div className="text-[11px] text-slate-400 font-medium">Admin</div>
+                <div className="text-[11px] text-slate-400 font-medium">CTO & Co-Founder</div>
               </div>
             </div>
           </div>
