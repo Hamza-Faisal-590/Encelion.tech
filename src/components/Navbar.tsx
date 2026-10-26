@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, ArrowRight } from 'lucide-react';
 
@@ -24,7 +25,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="nav-logo" onClick={() => setMobileMenuOpen(false)}>
           <div className="nav-logo-icon">
-            <img src="/logo.png" alt="Encelion.tech Logo" width={36} height={36} />
+            <Image src="/logo.webp" alt="Encelion.tech Logo" width={36} height={36} priority />
           </div>
           <span className="nav-logo-text">Encelion<span>.tech</span></span>
         </Link>

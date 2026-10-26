@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 
 export function Header() {
@@ -11,8 +12,8 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center space-x-3 group">
-          <div className="w-9 h-9 rounded-xl overflow-hidden bg-[#04171d] border border-[#00B894]/30 flex items-center justify-center shadow-lg shadow-[#00B894]/20 group-hover:scale-105 transition duration-200 flex-shrink-0">
-            <img src="/logo.png" alt="Encelion.tech Logo" className="w-full h-full object-cover" />
+          <div className="w-9 h-9 rounded-xl overflow-hidden bg-[#04171d] border border-[#00B894]/30 flex items-center justify-center shadow-lg shadow-[#00B894]/20 group-hover:scale-105 transition duration-200 flex-shrink-0 relative">
+            <Image src="/logo.webp" alt="Encelion.tech Logo" fill sizes="36px" className="object-cover" priority />
           </div>
           <span className="font-extrabold text-xl tracking-tight text-white group-hover:text-[#00B894] transition">
             ENCELION<span className="text-[#00B894]">.TECH</span>

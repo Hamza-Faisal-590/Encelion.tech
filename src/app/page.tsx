@@ -2,6 +2,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Founders from '@/components/Founders';
 import Link from 'next/link';
+import Image from 'next/image';
 import ColorIcon from '@/components/ColorIcon';
 import { ArrowRight } from 'lucide-react';
 import { DEFAULT_SERVICES } from '@/data/services';
@@ -95,10 +96,14 @@ export default function HomePage() {
             {/* Right Column: Robot Image with Floating Pills */}
             <div className="hero-visual-wrapper">
               <div className="hero-robot-card">
-                <img
-                  src="/hero_robot.png"
+                <Image
+                  src="/hero_robot.webp"
                   alt="Encelion Futuristic AI Robot"
+                  width={540}
+                  height={540}
+                  priority
                   className="hero-robot-img"
+                  style={{ objectFit: 'contain', width: '100%', height: 'auto' }}
                 />
 
                 {/* Powered by Innovation Overlay Badge */}
@@ -190,7 +195,7 @@ export default function HomePage() {
             {/* Right: Neural Brain graphic */}
             <div>
               <div style={{ textAlign: 'center', marginBottom: 20 }}>
-                <img src="/ai_brain.png" alt="Neural Brain" style={{ maxHeight: 240, margin: '0 auto', objectFit: 'contain' }} />
+                <Image src="/ai_brain.webp" alt="Neural Brain" width={400} height={240} loading="lazy" style={{ maxHeight: 240, margin: '0 auto', objectFit: 'contain' }} />
               </div>
 
               <div className="grid-4" style={{ gap: 12 }}>
@@ -270,8 +275,8 @@ export default function HomePage() {
                 const tag = p.badge?.toUpperCase() || p.category?.toUpperCase() || 'AI PRODUCT';
                 return (
                   <div key={p.id || i} className="product-card">
-                    <div style={{ height: 150, background: '#0A1628', overflow: 'hidden' }}>
-                      <img src={prodImg} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div style={{ height: 150, background: '#0A1628', overflow: 'hidden', position: 'relative' }}>
+                      <Image src={prodImg.replace('.png', '.webp')} alt={p.title} fill loading="lazy" style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 380px" />
                     </div>
                     <div className="product-card-body" style={{ padding: 16 }}>
                       <div className="product-tag">{tag}</div>
@@ -357,8 +362,8 @@ export default function HomePage() {
                 { category: 'Manufacturing', title: 'AI Quality Inspection', stat: '+95%', statLabel: 'Accuracy Rate', img: '/case_manufacturing.png' },
               ].map((c, i) => (
                 <div key={i} style={{ background: '#0F2040', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, overflow: 'hidden' }}>
-                  <div style={{ height: 130, background: '#1a2e50', overflow: 'hidden' }}>
-                    <img src={c.img} alt={c.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div style={{ height: 130, background: '#1a2e50', overflow: 'hidden', position: 'relative' }}>
+                    <Image src={c.img.replace('.png', '.webp')} alt={c.title} fill loading="lazy" style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 380px" />
                   </div>
                   <div style={{ padding: 14 }}>
                     <div style={{ fontSize: 10, fontWeight: 700, color: '#00B894', textTransform: 'uppercase', marginBottom: 4 }}>{c.category}</div>

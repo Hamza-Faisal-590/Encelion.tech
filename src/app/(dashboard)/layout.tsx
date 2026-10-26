@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
@@ -69,8 +70,8 @@ export default function DashboardLayout({
           {/* Header with Close */}
           <div className="flex items-center justify-between mb-6">
             <Link href="/dashboard" className="flex items-center space-x-3 px-2 py-1" onClick={() => setMobileMenuOpen(false)}>
-              <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#04171d] border border-[#00B894]/30 shadow-lg shadow-[#00B894]/20 flex items-center justify-center flex-shrink-0">
-                <img src="/logo.png" alt="Encelion.tech Logo" className="w-full h-full object-cover" />
+              <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#04171d] border border-[#00B894]/30 shadow-lg shadow-[#00B894]/20 flex items-center justify-center flex-shrink-0 relative">
+                <Image src="/logo.webp" alt="Encelion.tech Logo" fill sizes="40px" className="object-cover" />
               </div>
               <div>
                 <span className="font-extrabold text-lg text-slate-900 tracking-tight">Encelion</span>
@@ -128,8 +129,8 @@ export default function DashboardLayout({
         <div>
           {/* Logo Brand */}
           <Link href="/dashboard" className="flex items-center space-x-3 px-2 py-1 mb-8">
-            <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#04171d] border border-[#00B894]/30 shadow-lg shadow-[#00B894]/20 flex items-center justify-center flex-shrink-0">
-              <img src="/logo.png" alt="Encelion.tech Logo" className="w-full h-full object-cover" />
+            <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#04171d] border border-[#00B894]/30 shadow-lg shadow-[#00B894]/20 flex items-center justify-center flex-shrink-0 relative">
+              <Image src="/logo.webp" alt="Encelion.tech Logo" fill sizes="40px" className="object-cover" />
             </div>
             <div>
               <span className="font-extrabold text-lg text-slate-900 tracking-tight">Encelion</span>
@@ -163,7 +164,7 @@ export default function DashboardLayout({
         {/* Sidebar Upgrade Banner */}
         <div className="mt-6 bg-gradient-to-b from-[#E0F7FA]/80 to-[#EBF8F6] rounded-2xl p-4 border border-cyan-100/70 text-center relative overflow-hidden shadow-xs">
           <div className="w-16 h-16 mx-auto mb-1 relative flex items-center justify-center">
-            <img src="/hero_robot.png" alt="Robot Pro" className="w-full h-full object-contain drop-shadow-md" />
+            <Image src="/hero_robot.webp" alt="Robot Pro" width={64} height={64} className="object-contain drop-shadow-md" />
           </div>
           <h4 className="font-bold text-sm text-slate-900 mt-1">Upgrade to Pro</h4>
           <p className="text-[11px] text-slate-500 leading-tight mt-1 mb-3 px-1">
@@ -234,8 +235,8 @@ export default function DashboardLayout({
 
             {/* Profile Avatar */}
             <div className="flex items-center space-x-2 sm:space-x-3 pl-2 border-l border-slate-200">
-              <div className="w-9 h-9 rounded-full bg-[#00B894]/10 border-2 border-[#00B894] overflow-hidden flex items-center justify-center font-bold text-xs text-[#00B894] flex-shrink-0">
-                <img src="/uploads/founder_1792168399823_hamza_png.png" alt="Hamza Faisal" className="w-full h-full object-cover" onError={(e) => { (e.target as any).style.display = 'none'; }} />
+              <div className="w-9 h-9 rounded-full bg-[#00B894]/10 border-2 border-[#00B894] overflow-hidden flex items-center justify-center font-bold text-xs text-[#00B894] flex-shrink-0 relative">
+                <Image src="/uploads/founder_1792168399823_hamza_png.webp" alt="Hamza Faisal" fill sizes="36px" className="object-cover" />
                 <span>HF</span>
               </div>
               <div className="text-left hidden lg:block">

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { 
   Bot, 
   MessageSquareCode, 
@@ -41,12 +42,12 @@ interface ColorIconProps {
 export default function ColorIcon({ name, size = 40, className = '' }: ColorIconProps) {
   // If we have custom generated 3D image renders for specific icons:
   const imageIcons: Record<string, string> = {
-    'agents': '/icon_service_agents.png',
-    'chatbot': '/icon_service_chatbot.png',
-    'workflow': '/icon_service_workflow.png',
-    'vision': '/icon_service_vision.png',
-    'custom': '/icon_service_custom.png',
-    'innovation': '/icon_val_innovation.png',
+    'agents': '/icon_service_agents.webp',
+    'chatbot': '/icon_service_chatbot.webp',
+    'workflow': '/icon_service_workflow.webp',
+    'vision': '/icon_service_vision.webp',
+    'custom': '/icon_service_custom.webp',
+    'innovation': '/icon_val_innovation.webp',
   };
 
   if (imageIcons[name]) {
@@ -68,9 +69,12 @@ export default function ColorIcon({ name, size = 40, className = '' }: ColorIcon
           transition: 'transform 0.2s ease, box-shadow 0.2s ease',
         }}
       >
-        <img 
+        <Image 
           src={imageIcons[name]} 
           alt={name}
+          width={size}
+          height={size}
+          loading="lazy"
           style={{
             width: '100%',
             height: '100%',

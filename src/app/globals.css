@@ -3,8 +3,6 @@
    Matching reference: ultra-bold grotesque headings with
    monospace eyebrow labels and clean body text
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -32,11 +30,11 @@
 
   /* â”€â”€ Font Families â”€â”€ */
   /* Space Grotesk â€” bold geometric grotesque, matches the heading in the picture */
-  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  /* DM Sans â€” clean humanist body text */
-  --font-body:    'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  /* Space Mono â€” monospace for eyebrow/label text exactly as in the picture */
-  --font-mono:    'Space Mono', 'Courier New', monospace;
+  --font-display: var(--font-display), 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* DM Sans — clean humanist body text */
+  --font-body:    var(--font-body), 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Space Mono — monospace for eyebrow/label text exactly as in the picture */
+  --font-mono:    var(--font-mono), 'Space Mono', 'Courier New', monospace;
 
   /* â”€â”€ Type Scale â”€â”€ */
   --text-2xs:  10px;
@@ -67,6 +65,15 @@
   --tracking-wide:      0.06em;
   --tracking-wider:     0.12em;
   --tracking-widest:    0.2em;  /* Picture label â€” very wide mono tracking */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 html {

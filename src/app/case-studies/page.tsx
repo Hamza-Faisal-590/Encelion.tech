@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import CaseStudiesList from '@/components/CaseStudiesList';
 
@@ -40,8 +41,8 @@ export default function CaseStudiesPage() {
             </div>
 
             {/* Code Monitors Image HD */}
-            <div className="hero-subpage-media" style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.4)', background: '#0F2040', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <img src="/dashboard_product.png" alt="Encelion Case Study Analytics Dashboard" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <div className="hero-subpage-media" style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.4)', background: '#0F2040', border: '1px solid rgba(255,255,255,0.1)', position: 'relative' }}>
+              <Image src="/dashboard_product.webp" alt="Encelion Case Study Analytics Dashboard" fill priority style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
           </div>
         </div>

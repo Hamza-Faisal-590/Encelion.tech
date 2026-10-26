@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, Clock, Award } from 'lucide-react';
 import { caseStudiesData, CaseStudy } from '@/data/caseStudies';
 
@@ -68,10 +69,13 @@ export default function CaseStudiesList() {
           >
             {/* Image container */}
             <div style={{ height: 180, overflow: 'hidden', position: 'relative', background: '#0A1628' }}>
-              <img
-                src={cs.heroImage}
+              <Image
+                src={cs.heroImage.replace(/\.(png|jpg|jpeg)$/, '.webp')}
                 alt={cs.title}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                fill
+                loading="lazy"
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 100vw, 380px"
               />
               <div style={{
                 position: 'absolute',

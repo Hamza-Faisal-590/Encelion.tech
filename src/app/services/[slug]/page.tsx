@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 import ColorIcon from '@/components/ColorIcon';
 import { ArrowRight, CheckCircle, Clock, Star, ChevronRight } from 'lucide-react';
 import { notFound } from 'next/navigation';
@@ -518,7 +519,7 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
               >
                 {/* Project image */}
                 <div style={{ height: 180, overflow: 'hidden', position: 'relative' }}>
-                  <img src={project.image} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <Image src={project.image.replace('.png', '.webp')} alt={project.title} fill sizes="(max-width: 768px) 100vw, 380px" style={{ objectFit: 'cover' }} loading="lazy" />
                   <div style={{
                     position: 'absolute', inset: 0,
                     background: `linear-gradient(to bottom, transparent 40%, ${service.heroColor}88 100%)`,

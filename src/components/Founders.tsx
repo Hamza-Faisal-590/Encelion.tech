@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Linkedin, Twitter, Globe } from 'lucide-react';
 import { useFounders } from '@/hooks/useFounders';
 
@@ -100,9 +101,12 @@ export default function Founders() {
                     boxShadow: `0 8px 24px ${founder.color}40`,
                   }}>
                     {founder.image ? (
-                      <img
-                        src={founder.image}
+                      <Image
+                        src={founder.image.replace(/\.(png|jpg|jpeg)$/, '.webp')}
                         alt={founder.name}
+                        width={96}
+                        height={96}
+                        loading="lazy"
                         style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
                       />
                     ) : (

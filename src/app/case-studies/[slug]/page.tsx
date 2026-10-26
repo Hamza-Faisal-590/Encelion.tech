@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, CheckCircle, Clock, MapPin, Building, ChevronRight, Award, Layers } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { caseStudiesData } from '@/data/caseStudies';
@@ -114,10 +115,13 @@ export default function CaseStudyDetailPage({ params }: Props) {
               position: 'relative',
               background: '#0A1628',
             }}>
-              <img
-                src={caseStudy.heroImage}
+              <Image
+                src={caseStudy.heroImage.replace('.png', '.webp')}
                 alt={caseStudy.title}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 550px"
+                style={{ objectFit: 'cover' }}
               />
               <div style={{
                 position: 'absolute',
@@ -316,7 +320,7 @@ export default function CaseStudyDetailPage({ params }: Props) {
                 background: '#fff', border: '1px solid #E5E7EB', borderRadius: 20, overflow: 'hidden', display: 'flex', flexDirection: 'column',
               }}>
                 <div style={{ height: 160, overflow: 'hidden', position: 'relative' }}>
-                  <img src={cs.heroImage} alt={cs.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <Image src={cs.heroImage.replace('.png', '.webp')} alt={cs.title} fill sizes="(max-width: 768px) 100vw, 360px" style={{ objectFit: 'cover' }} loading="lazy" />
                   <div style={{
                     position: 'absolute', top: 12, left: 12, fontSize: 10, fontWeight: 700, color: '#fff',
                     background: 'rgba(10,22,40,0.75)', backdropFilter: 'blur(4px)', borderRadius: 12, padding: '3px 10px',

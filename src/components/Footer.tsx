@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Mail, Phone, MapPin, Twitter, Linkedin, Github, Youtube, ArrowRight } from 'lucide-react';
 import { useContactInfo } from '@/hooks/useContactInfo';
 
@@ -15,7 +16,7 @@ export default function Footer() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
               <div className="nav-logo-icon">
-                <img src="/logo.png" alt="Encelion.tech Logo" width={36} height={36} />
+                <Image src="/logo.webp" alt="Encelion.tech Logo" width={36} height={36} loading="lazy" />
               </div>
               <span style={{ fontSize: 18, fontWeight: 700, color: '#fff', fontFamily: 'var(--font-display)' }}>
                 Encelion<span style={{ color: '#00B894' }}>.tech</span>

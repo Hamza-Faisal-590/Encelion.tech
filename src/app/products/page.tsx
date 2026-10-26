@@ -1,15 +1,14 @@
-'use client';
-
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 import ColorIcon from '@/components/ColorIcon';
 import { ArrowRight } from 'lucide-react';
-import { useProducts } from '@/hooks/useProducts';
+import { DEFAULT_PRODUCTS } from '@/data/products';
 
+// Static server component — no 'use client' needed for product list rendering
 export default function ProductsPage() {
-  const { products } = useProducts();
-  const activeProducts = products.filter(p => p.status !== 'DRAFT');
+  const activeProducts = DEFAULT_PRODUCTS.filter(p => p.status !== 'DRAFT');
 
   return (
     <div>
@@ -37,9 +36,9 @@ export default function ProductsPage() {
               </div>
             </div>
 
-            {/* High Res Laptop SaaS Product Graphic */}
-            <div className="hero-subpage-media" style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 12px 36px rgba(0,0,0,0.12)', background: '#0A1628' }}>
-              <img src="/dashboard_product.png" alt="SaaS Dashboard Laptop" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            {/* Hero image */}
+            <div className="hero-subpage-media" style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 12px 36px rgba(0,0,0,0.12)', background: '#0A1628', position: 'relative' }}>
+              <Image src="/dashboard_product.webp" alt="SaaS Dashboard Laptop" fill priority style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
           </div>
         </div>
@@ -95,5 +94,3 @@ export default function ProductsPage() {
     </div>
   );
 }
-
-

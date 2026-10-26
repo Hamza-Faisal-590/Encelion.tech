@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function AuthLayout({
   children,
@@ -13,8 +14,8 @@ export default function AuthLayout({
       <div className="w-full max-w-md relative z-10">
         <div className="flex justify-center mb-6">
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-11 h-11 rounded-xl overflow-hidden bg-[#04171d] border border-[#00B894]/40 shadow-lg shadow-[#00B894]/25 flex items-center justify-center group-hover:scale-105 transition duration-200">
-              <img src="/logo.png" alt="Encelion.tech Logo" className="w-full h-full object-cover" />
+            <div className="w-11 h-11 rounded-xl overflow-hidden bg-[#04171d] border border-[#00B894]/40 shadow-lg shadow-[#00B894]/25 flex items-center justify-center group-hover:scale-105 transition duration-200 relative">
+              <Image src="/logo.webp" alt="Encelion.tech Logo" fill sizes="44px" className="object-cover" priority />
             </div>
             <span className="font-extrabold text-2xl tracking-tight text-white">
               Encelion<span className="text-[#00B894]">.tech</span>

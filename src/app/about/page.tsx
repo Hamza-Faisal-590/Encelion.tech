@@ -2,6 +2,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Founders from '@/components/Founders';
 import Link from 'next/link';
+import Image from 'next/image';
 import ColorIcon from '@/components/ColorIcon';
 import { ArrowRight } from 'lucide-react';
 
@@ -28,8 +29,8 @@ export default function AboutPage() {
             </div>
 
             {/* Robot Image from HD Asset */}
-            <div className="hero-subpage-media" style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 12px 36px rgba(0,0,0,0.1)', background: '#e0f7f1' }}>
-              <img src="/hero_robot.png" alt="Encelion Robot" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+            <div className="hero-subpage-media" style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 12px 36px rgba(0,0,0,0.1)', background: '#e0f7f1', position: 'relative' }}>
+              <Image src="/hero_robot.webp" alt="Encelion Robot" fill priority style={{ objectFit: 'cover', objectPosition: 'center top' }} sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
           </div>
         </div>
@@ -63,8 +64,8 @@ export default function AboutPage() {
             </div>
 
             {/* Team Meeting Photo HD */}
-            <div className="hero-subpage-media" style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.15)' }}>
-              <img src="/case_ecommerce.png" alt="Encelion Team" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <div className="hero-subpage-media" style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.15)', position: 'relative' }}>
+              <Image src="/case_ecommerce.webp" alt="Encelion Team" fill loading="lazy" style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
           </div>
         </div>

@@ -1,16 +1,15 @@
-'use client';
-
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Founders from '@/components/Founders';
 import Link from 'next/link';
+import Image from 'next/image';
 import ColorIcon from '@/components/ColorIcon';
 import { ArrowRight } from 'lucide-react';
-import { useServices } from '@/hooks/useServices';
+import { DEFAULT_SERVICES } from '@/data/services';
 
+// Static server component — no client-side JS hydration needed for data
 export default function ServicesPage() {
-  const { services } = useServices();
-  const activeServices = services.filter(s => s.status !== 'DRAFT');
+  const activeServices = DEFAULT_SERVICES.filter(s => s.status !== 'DRAFT');
 
   return (
     <div>
@@ -38,8 +37,8 @@ export default function ServicesPage() {
               </div>
             </div>
 
-            <div className="hero-subpage-media" style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.3)', background: '#0A1628' }}>
-              <img src="/hero_robot.png" alt="Encelion Services Robot" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+            <div className="hero-subpage-media" style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.3)', background: '#0A1628', position: 'relative' }}>
+              <Image src="/hero_robot.webp" alt="Encelion Services Robot" fill priority style={{ objectFit: 'cover', objectPosition: 'center top' }} sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
           </div>
         </div>
@@ -72,12 +71,12 @@ export default function ServicesPage() {
               </div>
             ))}
 
-            {/* 6th Card: Your Vision + Our AI = Real Results */}
+            {/* CTA Card */}
             <div style={{ background: '#00B894', borderRadius: 16, padding: 28, color: '#fff', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
                 <h3 style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 10, letterSpacing: '-0.02em' }}>Your Vision + Our AI = Real Results</h3>
                 <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.9)', lineHeight: 1.6 }}>
-                  Let's build something amazing together. Get in touch with our team today.
+                  Let&apos;s build something amazing together. Get in touch with our team today.
                 </p>
               </div>
               <div style={{ marginTop: 24 }}>
@@ -96,5 +95,3 @@ export default function ServicesPage() {
     </div>
   );
 }
-
-

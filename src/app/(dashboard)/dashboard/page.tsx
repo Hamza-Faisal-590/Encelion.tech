@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Calendar,
   ChevronDown,
@@ -111,7 +112,7 @@ export default function DashboardPage() {
 
             {/* Center 3D Robot Image */}
             <div className="hidden md:block absolute right-48 top-0 bottom-0 w-64 pointer-events-none">
-              <img src="/hero_robot.png" alt="Robot AI" className="w-full h-full object-contain drop-shadow-xl" />
+              <Image src="/hero_robot.webp" alt="Robot AI" fill sizes="256px" className="object-contain drop-shadow-xl" priority />
             </div>
 
             {/* Right Glassmorphism Pills */}
